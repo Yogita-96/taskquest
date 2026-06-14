@@ -16,16 +16,16 @@ A gamified productivity app built with React, inspired by RPG quest systems. Man
 
 | Empty state | Quests added | Completed quests |
 |---|---|---|
-| ![Empty state — no quests, 0 XP](Screenshot_2026-06-14_at_8_35_35_PM.png) | ![Quest log with active quests](Screenshot_2026-06-14_at_8_38_10_PM.png) | ![Completed quests with XP earned](Screenshot_2026-06-14_at_8_38_50_PM.png) |
-
+| ![Empty state — no quests, 0 XP](desktop-empty.png) | ![Quest log with active quests](desktop-quests.png) | ![Completed quests with XP earned](desktop-completed.png) |
+ 
 **Confirmation dialog — delete protection**
-
-![Browser confirmation dialog before quest deletion](Screenshot_2026-06-14_at_8_39_15_PM.png)
-
+ 
+![Browser confirmation dialog before quest deletion](desktop-delete-confirm.png)
+ 
 ### Mobile
-
-![Mobile view — responsive single-column layout with 30 XP progress](Screenshot_2026-06-14_at_8_43_23_PM.png)
-
+ 
+![Mobile view — responsive single-column layout with 30 XP progress](mobile-view.png)
+ 
 ---
 
 ## The Idea
