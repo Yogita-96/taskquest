@@ -6,7 +6,7 @@ A gamified productivity app built with React, inspired by RPG quest systems. Man
 
 ## Live Demo
 
-🔗 [taskquest-three.vercel.app]
+🔗 [[taskquest](taskquest-three.vercel.app)]
 
 ---
 
@@ -120,8 +120,8 @@ These aren't just React best practices. They're lessons from functional QA work 
 Frontend developer with a background in game FQA (Ubisoft, Bandai Namco titles via Globalstep). Currently building in React while exploring game development with Unity and Unreal Engine.
 
 - 🌐 Portfolio: [Add Portfolio Link]
-- 💼 LinkedIn: [[](https://www.linkedin.com/in/yogita-m/)]
-- 🎮 MobyGames: [[](https://www.mobygames.com/person/1835643/yogita-yogita/)]
+- 💼 LinkedIn: [[Yogitaa M.](https://www.linkedin.com/in/yogita-m/)]
+- 🎮 MobyGames: [[Yogita Yogita](https://www.mobygames.com/person/1835643/yogita-yogita/)]
 
 ---
 
