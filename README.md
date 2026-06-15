@@ -14,23 +14,23 @@ A gamified productivity app built with React, inspired by RPG quest systems. Man
 
 ### Desktop
 
-| Empty state | Quests added | Completed quests |
-|---|---|---|
-| ![Empty state — no quests, 0 XP](desktop-empty.png) | ![Quest log with active quests](desktop-quests.png) | ![Completed quests with XP earned](desktop-completed.png) |
- 
+| Empty state                                                    | Quests added                                                   | Completed quests                                                     |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------- |
+| ![Empty state — no quests, 0 XP](src/assets/desktop-empty.png) | ![Quest log with active quests](src/assets/desktop-quests.png) | ![Completed quests with XP earned](src/assets/desktop-completed.png) |
+
 **Confirmation dialog — delete protection**
- 
-![Browser confirmation dialog before quest deletion](desktop-delete-confirm.png)
- 
+
+![Browser confirmation dialog before quest deletion](src/assets/desktop-delete-confirm.png)
+
 ### Mobile
- 
-![Mobile view — responsive single-column layout with 30 XP progress](mobile-view.png)
- 
+
+![Mobile view — responsive single-column layout with 30 XP progress](src/assets/mobile-view.png)
+
 ---
 
 ## The Idea
 
-TaskQuest grew out of a question I kept asking while building React apps: *What would a to-do list feel like if it was designed by a game studio?*
+TaskQuest grew out of a question I kept asking while building React apps: _What would a to-do list feel like if it was designed by a game studio?_
 
 The UI borrows from RPG quest logs — tasks become quests, completions earn XP, and your progress persists between sessions. But beneath the aesthetic, the real design driver was QA thinking: every input, action, and state transition was considered from the perspective of how it could break or frustrate a user.
 
@@ -49,13 +49,13 @@ The UI borrows from RPG quest logs — tasks become quests, completions earn XP,
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | React |
-| State | React Hooks (`useState`, `useEffect`) |
-| Persistence | `localStorage` |
-| Styling | Plain CSS (custom properties, flexbox, responsive) |
-| Deployment | Vercel |
+| Layer       | Technology                                         |
+| ----------- | -------------------------------------------------- |
+| Framework   | React                                              |
+| State       | React Hooks (`useState`, `useEffect`)              |
+| Persistence | `localStorage`                                     |
+| Styling     | Plain CSS (custom properties, flexbox, responsive) |
+| Deployment  | Vercel                                             |
 
 ---
 
@@ -101,8 +101,6 @@ A few deliberate decisions worth noting:
 - **Single `useEffect`** — both `quests` and `xp` sync to `localStorage` in one effect, keeping persistence logic in one place
 
 ---
-
-
 
 This project was deliberately built with **QA-first thinking** applied to frontend development:
 
