@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLevelSystem } from "./hooks/useLevelSystem";
 import "./App.css";
 
 function App() {
@@ -9,14 +10,12 @@ function App() {
     return savedQuests ? JSON.parse(savedQuests) : [];
   });
 
-  const [xp, setXp] = useState(() => {
-    return Number(localStorage.getItem("xp")) || 0;
-  });
+  const { totalXP, levelInfo, showLevelUp, newTitle, addXP, dismissLevelUp } =
+    useLevelSystem();
 
   useEffect(() => {
     localStorage.setItem("quests", JSON.stringify(quests));
-    localStorage.setItem("xp", xp);
-  }, [quests, xp]);
+  }, [quests]);
 
   const addQuest = () => {
     if (!task.trim()) {
@@ -48,20 +47,16 @@ function App() {
   const completeQuest = (id) => {
     setQuests(
       quests.map((quest) =>
-        quest.id === id
-          ? { ...quest, completed: true }
-          : quest
+        quest.id === id ? { ...quest, completed: true } : quest
       )
     );
-
-    setXp(xp + 10);
+    addXP(10);
   };
 
   const deleteQuest = (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to abandon this quest?"
     );
-
     if (confirmDelete) {
       setQuests(quests.filter((quest) => quest.id !== id));
     }
@@ -69,25 +64,35 @@ function App() {
 
   return (
     <div className="app">
+      {showLevelUp && (
+        <div className="levelup-banner" onClick={dismissLevelUp}>
+          <div className="levelup-content">
+            <span className="levelup-icon">⚔️</span>
+            <span className="levelup-text">Level Up!</span>
+            <span className="levelup-title">{newTitle}</span>
+          </div>
+        </div>
+      )}
+
       <div className="container">
         <h1>🎮 TaskQuest</h1>
-
-        <p className="subtitle">
-          Gamified productivity powered by QA thinking.
-        </p>
+        <p className="subtitle">Gamified productivity powered by QA thinking.</p>
 
         <div className="xp-box">
+          <div className="xp-header">
+            <span className="player-title">{levelInfo.title}</span>
+            <span className="level-badge">Level {levelInfo.level}</span>
+          </div>
           <div className="xp-text">
             <span>XP Progress</span>
-            <span>{xp} XP</span>
+            <span>
+              {levelInfo.xpIntoCurrentLevel} / {levelInfo.xpForCurrentLevel} XP
+            </span>
           </div>
-
           <div className="xp-bar">
             <div
               className="xp-fill"
-              style={{
-                width: `${Math.min(xp, 100)}%`,
-              }}
+              style={{ width: `${levelInfo.progressPercent}%` }}
             ></div>
           </div>
         </div>
@@ -99,40 +104,27 @@ function App() {
             value={task}
             onChange={(e) => setTask(e.target.value)}
           />
-
-          <button onClick={addQuest}>
-            Add
-          </button>
+          <button onClick={addQuest}>Add</button>
         </div>
 
         <div className="quest-list">
           {quests.map((quest) => (
             <div className="quest-card" key={quest.id}>
-              <span
-                className={
-                  quest.completed ? "completed" : ""
-                }
-              >
+              <span className={quest.completed ? "completed" : ""}>
                 {quest.text}
               </span>
-
               <div className="buttons">
                 {!quest.completed && (
                   <button
                     className="complete-btn"
-                    onClick={() =>
-                      completeQuest(quest.id)
-                    }
+                    onClick={() => completeQuest(quest.id)}
                   >
                     Complete
                   </button>
                 )}
-
                 <button
                   className="delete-btn"
-                  onClick={() =>
-                    deleteQuest(quest.id)
-                  }
+                  onClick={() => deleteQuest(quest.id)}
                 >
                   Delete
                 </button>
