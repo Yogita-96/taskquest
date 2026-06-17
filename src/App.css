@@ -13,8 +13,7 @@ body {
 .app {
   min-height: 100vh;
   padding: 40px 20px;
-  background:
-    radial-gradient(circle at top, #1e293b, #0f172a);
+  background: radial-gradient(circle at top, #1e293b, #0f172a);
 }
 
 .container {
@@ -33,6 +32,7 @@ h1 {
   font-size: 1.05rem;
 }
 
+/* XP BOX */
 .xp-box {
   background: #1e293b;
   padding: 20px;
@@ -40,11 +40,35 @@ h1 {
   margin-bottom: 25px;
 }
 
+.xp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.player-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #a78bfa;
+  letter-spacing: 0.03em;
+}
+
+.level-badge {
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #312e81;
+  color: #c4b5fd;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
 .xp-text {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
   color: #cbd5e1;
+  font-size: 0.9rem;
 }
 
 .xp-bar {
@@ -57,14 +81,12 @@ h1 {
 
 .xp-fill {
   height: 100%;
-  background: linear-gradient(
-    to right,
-    #22c55e,
-    #14b8a6
-  );
-  transition: 0.3s ease;
+  background: linear-gradient(to right, #22c55e, #14b8a6);
+  border-radius: 999px;
+  transition: width 0.4s ease;
 }
 
+/* INPUT */
 .task-input {
   display: flex;
   gap: 10px;
@@ -101,6 +123,7 @@ h1 {
   background: #0d9488;
 }
 
+/* QUEST LIST */
 .quest-list {
   display: flex;
   flex-direction: column;
@@ -152,6 +175,98 @@ h1 {
   background: #b91c1c;
 }
 
+/* LEVEL UP BANNER */
+@keyframes bannerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes bannerFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.levelup-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  cursor: pointer;
+  animation: bannerSlideDown 0.4s ease forwards;
+}
+
+.levelup-content {
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  border: 1px solid #a78bfa;
+  border-radius: 20px;
+  padding: 20px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 0 40px rgba(167, 139, 250, 0.3);
+  animation: pulse 0.6s ease 0.4s;
+}
+
+.levelup-icon {
+  font-size: 2rem;
+}
+
+.levelup-text {
+  font-size: 1.6rem;
+  font-weight: 800;
+  background: linear-gradient(to right, #a78bfa, #14b8a6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.05em;
+}
+
+.levelup-title {
+  font-size: 1rem;
+  color: #c4b5fd;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.levelup-hint {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* STICKY HEADER */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: radial-gradient(circle at top, #1e293b, #0f172a);
+  padding: 40px 20px 20px;
+  margin: -40px -20px 20px;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #1e293b;
+}
+
+/* RESPONSIVE */
 @media (max-width: 640px) {
   .quest-card {
     flex-direction: column;
@@ -165,5 +280,9 @@ h1 {
 
   h1 {
     font-size: 2.3rem;
+  }
+
+  .levelup-content {
+    padding: 16px 24px;
   }
 }
