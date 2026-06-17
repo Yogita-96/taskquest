@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import confetti from "canvas-confetti";
 import { useLevelSystem } from "./hooks/useLevelSystem";
 import "./App.css";
 
@@ -16,6 +17,17 @@ function App() {
   useEffect(() => {
     localStorage.setItem("quests", JSON.stringify(quests));
   }, [quests]);
+
+  useEffect(() => {
+    if (showLevelUp) {
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ["#14b8a6", "#22c55e", "#a78bfa", "#f59e0b", "#ffffff"],
+      });
+    }
+  }, [showLevelUp]);
 
   const addQuest = () => {
     if (!task.trim()) {
@@ -70,6 +82,7 @@ function App() {
             <span className="levelup-icon">⚔️</span>
             <span className="levelup-text">Level Up!</span>
             <span className="levelup-title">{newTitle}</span>
+            <span className="levelup-hint">click to dismiss</span>
           </div>
         </div>
       )}
