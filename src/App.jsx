@@ -11,7 +11,7 @@ function App() {
     return savedQuests ? JSON.parse(savedQuests) : [];
   });
 
-  const { totalXP, levelInfo, showLevelUp, newTitle, addXP, dismissLevelUp } =
+  const { levelInfo, showLevelUp, newTitle, addXP, dismissLevelUp } =
     useLevelSystem();
 
   useEffect(() => {
@@ -74,6 +74,12 @@ function App() {
     }
   };
 
+  // Sort: active quests first, completed quests at bottom
+  const sortedQuests = [...quests].sort((a, b) => {
+    if (a.completed === b.completed) return 0;
+    return a.completed ? 1 : -1;
+  });
+
   return (
     <div className="app">
       {showLevelUp && (
@@ -87,41 +93,45 @@ function App() {
         </div>
       )}
 
+      <div className="sticky-header">
+        <div className="container">
+          <h1>🎮 TaskQuest</h1>
+          <p className="subtitle">Gamified productivity powered by QA thinking.</p>
+
+          <div className="xp-box">
+            <div className="xp-header">
+              <span className="player-title">{levelInfo.title}</span>
+              <span className="level-badge">Level {levelInfo.level}</span>
+            </div>
+            <div className="xp-text">
+              <span>XP Progress</span>
+              <span>
+                {levelInfo.xpIntoCurrentLevel} / {levelInfo.xpForCurrentLevel} XP
+              </span>
+            </div>
+            <div className="xp-bar">
+              <div
+                className="xp-fill"
+                style={{ width: `${levelInfo.progressPercent}%` }}
+              ></div>
+            </div>
+          </div>
+
+          <div className="task-input">
+            <input
+              type="text"
+              placeholder="Enter a new quest..."
+              value={task}
+              onChange={(e) => setTask(e.target.value)}
+            />
+            <button onClick={addQuest}>Add</button>
+          </div>
+        </div>
+      </div>
+
       <div className="container">
-        <h1>🎮 TaskQuest</h1>
-        <p className="subtitle">Gamified productivity powered by QA thinking.</p>
-
-        <div className="xp-box">
-          <div className="xp-header">
-            <span className="player-title">{levelInfo.title}</span>
-            <span className="level-badge">Level {levelInfo.level}</span>
-          </div>
-          <div className="xp-text">
-            <span>XP Progress</span>
-            <span>
-              {levelInfo.xpIntoCurrentLevel} / {levelInfo.xpForCurrentLevel} XP
-            </span>
-          </div>
-          <div className="xp-bar">
-            <div
-              className="xp-fill"
-              style={{ width: `${levelInfo.progressPercent}%` }}
-            ></div>
-          </div>
-        </div>
-
-        <div className="task-input">
-          <input
-            type="text"
-            placeholder="Enter a new quest..."
-            value={task}
-            onChange={(e) => setTask(e.target.value)}
-          />
-          <button onClick={addQuest}>Add</button>
-        </div>
-
         <div className="quest-list">
-          {quests.map((quest) => (
+          {sortedQuests.map((quest) => (
             <div className="quest-card" key={quest.id}>
               <span className={quest.completed ? "completed" : ""}>
                 {quest.text}
