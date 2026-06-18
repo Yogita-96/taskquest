@@ -254,6 +254,25 @@ h1 {
   margin-top: 4px;
 }
 
+/* CLEAR COMPLETED BUTTON */
+.clear-btn {
+  display: block;
+  margin-bottom: 16px;
+  padding: 10px 20px;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  background: transparent;
+  color: #64748b;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.clear-btn:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
 /* STICKY HEADER */
 .sticky-header {
   position: sticky;
