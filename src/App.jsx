@@ -35,7 +35,6 @@ function App() {
       return;
     }
 
-    
     const duplicateQuest = quests.find(
       (q) => q.text.toLowerCase() === task.toLowerCase() && !q.completed
     );
@@ -123,6 +122,7 @@ function App() {
               placeholder="Enter a new quest..."
               value={task}
               onChange={(e) => setTask(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addQuest()}
             />
             <button onClick={addQuest}>Add</button>
           </div>
