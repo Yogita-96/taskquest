@@ -35,8 +35,9 @@ function App() {
       return;
     }
 
+    
     const duplicateQuest = quests.find(
-      (q) => q.text.toLowerCase() === task.toLowerCase()
+      (q) => q.text.toLowerCase() === task.toLowerCase() && !q.completed
     );
 
     if (duplicateQuest) {
@@ -74,7 +75,6 @@ function App() {
     }
   };
 
-  // Sort: active quests first, completed quests at bottom
   const sortedQuests = [...quests].sort((a, b) => {
     if (a.completed === b.completed) return 0;
     return a.completed ? 1 : -1;
