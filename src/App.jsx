@@ -65,6 +65,10 @@ function App() {
     addXP(10);
   };
 
+  const clearCompleted = () => {
+    setQuests(quests.filter((quest) => !quest.completed));
+  };
+
   const deleteQuest = (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to abandon this quest?"
@@ -130,6 +134,12 @@ function App() {
       </div>
 
       <div className="container">
+        
+        {quests.some((q) => q.completed) && (
+          <button className="clear-btn" onClick={clearCompleted}>
+            Clear Completed
+          </button>
+        )}
         <div className="quest-list">
           {sortedQuests.map((quest) => (
             <div className="quest-card" key={quest.id}>
