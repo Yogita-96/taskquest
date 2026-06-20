@@ -66,7 +66,12 @@ function App() {
   };
 
   const clearCompleted = () => {
-    setQuests(quests.filter((quest) => !quest.completed));
+    const confirmClear = window.confirm(
+      "Clear all completed quests? This cannot be undone."
+    );
+    if (confirmClear) {
+      setQuests(quests.filter((quest) => !quest.completed));
+    }
   };
 
   const deleteQuest = (id) => {
@@ -78,11 +83,9 @@ function App() {
     }
   };
 
-  // Sort: active quests first, completed quests at bottom
-  const sortedQuests = [...quests].sort((a, b) => {
-    if (a.completed === b.completed) return 0;
-    return a.completed ? 1 : -1;
-  });
+  // Split into active and completed groups
+  const activeQuests = quests.filter((q) => !q.completed);
+  const completedQuests = quests.filter((q) => q.completed);
 
   return (
     <div className="app">
@@ -99,7 +102,7 @@ function App() {
 
       <div className="sticky-header">
         <div className="container">
-          <h1>🎮 TaskQuest</h1>
+          <h1><span className="title-icon">⚔</span> TaskQuest</h1>
           <p className="subtitle">Gamified productivity powered by QA thinking.</p>
 
           <div className="xp-box">
@@ -135,36 +138,60 @@ function App() {
       </div>
 
       <div className="container">
-        {quests.some((q) => q.completed) && (
-          <button className="clear-btn" onClick={clearCompleted}>
-            Clear Completed
-          </button>
-        )}
-        <div className="quest-list">
-          {sortedQuests.map((quest) => (
-            <div className="quest-card" key={quest.id}>
-              <span className={quest.completed ? "completed" : ""}>
-                {quest.text}
-              </span>
-              <div className="buttons">
-                {!quest.completed && (
-                  <button
-                    className="complete-btn"
-                    onClick={() => completeQuest(quest.id)}
-                  >
-                    Complete
-                  </button>
-                )}
-                <button
-                  className="delete-btn"
-                  onClick={() => deleteQuest(quest.id)}
-                >
-                  Abandon
-                </button>
-              </div>
+        {activeQuests.length > 0 && (
+          <>
+            <div className="section-label">Active Quests</div>
+            <div className="quest-list">
+              {activeQuests.map((quest) => (
+                <div className="quest-card active" key={quest.id}>
+                  <span>{quest.text}</span>
+                  <div className="buttons">
+                    <button
+                      className="complete-btn"
+                      onClick={() => completeQuest(quest.id)}
+                    >
+                      Complete
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => deleteQuest(quest.id)}
+                    >
+                      Abandon
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
+
+        {completedQuests.length > 0 && (
+          <>
+            <div className="section-label completed-label">Completed</div>
+            <button className="clear-btn" onClick={clearCompleted}>
+              ✕ Clear Completed
+            </button>
+            <div className="quest-list">
+              {completedQuests.map((quest) => (
+                <div className="quest-card" key={quest.id}>
+                  <span className="completed">{quest.text}</span>
+                  <div className="buttons">
+                    <button
+                      className="delete-btn"
+                      onClick={() => deleteQuest(quest.id)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {quests.length === 0 && (
+          <p className="empty-state">No quests yet. Add one above to begin your journey.</p>
+        )}
       </div>
     </div>
   );
