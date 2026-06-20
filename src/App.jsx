@@ -78,6 +78,7 @@ function App() {
     }
   };
 
+  // Sort: active quests first, completed quests at bottom
   const sortedQuests = [...quests].sort((a, b) => {
     if (a.completed === b.completed) return 0;
     return a.completed ? 1 : -1;
@@ -134,7 +135,6 @@ function App() {
       </div>
 
       <div className="container">
-        
         {quests.some((q) => q.completed) && (
           <button className="clear-btn" onClick={clearCompleted}>
             Clear Completed
@@ -159,7 +159,7 @@ function App() {
                   className="delete-btn"
                   onClick={() => deleteQuest(quest.id)}
                 >
-                  Delete
+                  Abandon
                 </button>
               </div>
             </div>
