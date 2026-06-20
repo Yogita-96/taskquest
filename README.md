@@ -1,12 +1,12 @@
 # TaskQuest ⚔️
 
-A gamified productivity app built with React, inspired by RPG quest systems. Manage your tasks as quests, earn XP for completing them, and level up your productivity — one commit at a time.
+A gamified productivity app built with React, inspired by RPG quest systems. Manage your tasks as quests, earn XP for completing them, level up through ranks from Newcomer to Legend, and conquer your day — one commit at a time.
 
 ---
 
 ## Live Demo
 
-🔗 [[taskquest](taskquest-three.vercel.app)]
+🔗 [taskquest-three.vercel.app](https://taskquest-three.vercel.app)
 
 ---
 
@@ -14,17 +14,17 @@ A gamified productivity app built with React, inspired by RPG quest systems. Man
 
 ### Desktop
 
-| Empty state                                                    | Quests added                                                   | Completed quests                                                     |
-| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------- |
-| ![Empty state — no quests, 0 XP](src/assets/desktop-empty.png) | ![Quest log with active quests](src/assets/desktop-quests.png) | ![Completed quests with XP earned](src/assets/desktop-completed.png) |
+| Active quests with XP progress                                 | Level-up celebration                                             | Completed quests                                              |
+| -------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------- |
+| ![Active quest log with XP bar](src/assets/desktop-quests.png) | ![Level-up banner with confetti](src/assets/desktop-levelup.png) | ![Completed quests section](src/assets/desktop-completed.png) |
 
-**Confirmation dialog — delete protection**
+**Confirmation dialogs — destructive action protection**
 
 ![Browser confirmation dialog before quest deletion](src/assets/desktop-delete-confirm.png)
 
 ### Mobile
 
-![Mobile view — responsive single-column layout with 30 XP progress](src/assets/mobile-view.png)
+![Mobile responsive view](src/assets/mobile-view.png)
 
 ---
 
@@ -32,30 +32,39 @@ A gamified productivity app built with React, inspired by RPG quest systems. Man
 
 TaskQuest grew out of a question I kept asking while building React apps: _What would a to-do list feel like if it was designed by a game studio?_
 
-The UI borrows from RPG quest logs — tasks become quests, completions earn XP, and your progress persists between sessions. But beneath the aesthetic, the real design driver was QA thinking: every input, action, and state transition was considered from the perspective of how it could break or frustrate a user.
+The UI borrows from RPG quest logs — tasks become quests, completions earn XP, and your progress persists between sessions. The first version proved the concept but the reward loop was incomplete: the XP bar filled up and nothing happened. That gap became the starting point for a deeper upgrade — a full leveling system, player titles, and a fantasy-themed redesign.
+
+Beneath the aesthetic, the real design driver throughout has been QA thinking: every input, action, and state transition considered from the perspective of how it could break or frustrate a user.
 
 ---
 
 ## Features
 
+- **Leveling system** with increasing XP thresholds (`level × 100` XP per level) — early levels come fast, later levels feel earned
+- **Player title progression** — Newcomer → Apprentice → Scout → Adventurer → Warrior → Champion → Legend
+- **Level-up celebration** — animated banner with confetti, auto-dismisses after 2.5s or on click
 - **Quest creation** with input validation — empty submissions are blocked
-- **Duplicate detection** — prevents identical quests from cluttering your log
-- **Confirmation dialogs** before destructive actions (quest deletion)
-- **XP progression system** — earn experience for completing quests
+- **Smart duplicate detection** — blocks duplicate active quests, but allows re-adding a quest once the existing one is completed (supports recurring tasks)
+- **Auto-sorting** — completed quests move to the bottom, keeping active quests in focus
+- **Sticky header** — XP bar and quest input stay fixed while the quest list scrolls
+- **Enter key support** — submit a quest without reaching for the mouse
+- **Bulk clear completed** — remove all completed quests at once, with confirmation
+- **Context-aware confirmations** — distinct confirmation messages for abandoning an active quest vs. removing a completed one
 - **Persistent state** via `localStorage` — progress survives page refreshes
-- **RPG-inspired UI** — quest log aesthetic with a clean, responsive layout
+- **Fantasy RPG UI** — Jewel Purple theme with Cinzel typography, gradient title, corner-bracketed panels, and a fully responsive layout
 
 ---
 
 ## Tech Stack
 
-| Layer       | Technology                                         |
-| ----------- | -------------------------------------------------- |
-| Framework   | React                                              |
-| State       | React Hooks (`useState`, `useEffect`)              |
-| Persistence | `localStorage`                                     |
-| Styling     | Plain CSS (custom properties, flexbox, responsive) |
-| Deployment  | Vercel                                             |
+| Layer       | Technology                                                             |
+| ----------- | ---------------------------------------------------------------------- |
+| Framework   | React (Vite)                                                           |
+| State       | React Hooks (`useState`, `useEffect`) + custom hook (`useLevelSystem`) |
+| Persistence | `localStorage`                                                         |
+| Animation   | `canvas-confetti`                                                      |
+| Styling     | Plain CSS (custom properties, flexbox, responsive, Google Fonts)       |
+| Deployment  | Vercel                                                                 |
 
 ---
 
@@ -70,10 +79,10 @@ cd taskquest
 npm install
 
 # Start the development server
-npm start
+npm run dev
 ```
 
-App runs at `http://localhost:3000`
+App runs at `http://localhost:5173`
 
 ---
 
@@ -83,33 +92,49 @@ App runs at `http://localhost:3000`
 taskquest/
 ├── public/
 ├── src/
-│   ├── App.js            # Root component — all state, logic, and UI
-│   ├── App.css           # All styles (dark theme, XP bar, quest cards, responsive)
-│   └── index.js          # Entry point
+│   ├── hooks/
+│   │   └── useLevelSystem.js   # XP calculation, level thresholds, title mapping
+│   ├── App.jsx                 # Root component — quest state, logic, UI
+│   ├── App.css                 # Fantasy RPG theme (Jewel Purple), layout, animations
+│   └── index.css               # Global resets and base styles
 ├── package.json
 └── README.md
 ```
+
+---
 
 ## Implementation Notes
 
 A few deliberate decisions worth noting:
 
-- **Lazy state initializers** — both `quests` and `xp` read from `localStorage` on first render only, using the `useState(() => ...)` initializer pattern to avoid re-reading on every render
-- **XP bar cap** — `Math.min(xp, 100)` keeps the progress bar visually bounded while the raw XP value continues to grow
-- **Case-insensitive duplicate check** — `q.text.toLowerCase() === task.toLowerCase()` catches "Buy milk" and "buy milk" as the same quest
-- **`window.confirm` for deletion** — a deliberate choice to use the browser's native dialog, keeping the implementation simple while still requiring intentional user action
-- **Single `useEffect`** — both `quests` and `xp` sync to `localStorage` in one effect, keeping persistence logic in one place
+- **Custom hook for XP logic** — `useLevelSystem` isolates all leveling logic (level calculation, title mapping, level-up detection) away from `App.jsx`, keeping concerns separated and the logic independently reusable
+- **Increasing XP thresholds** — `level × 100` XP required per level, calculated by walking up levels until total XP fits the current one. Rewards early momentum while making higher levels feel earned
+- **Lazy state initializers** — `quests` and the hook's XP state read from `localStorage` on first render only, using the `useState(() => ...)` initializer pattern to avoid re-reading on every render
+- **Smart duplicate check** — only blocks a duplicate if the existing quest with the same name is still active; completed quests don't block re-adding, supporting recurring tasks like "Go for a walk"
+- **Context-aware `window.confirm`** — the confirmation message changes depending on whether a quest is being abandoned (active) or removed (completed), keeping the language accurate to the action
+- **Single `useEffect` per concern** — quests sync to `localStorage` in one effect, XP syncs in another inside the hook, keeping persistence logic predictable and easy to trace
 
 ---
 
 This project was deliberately built with **QA-first thinking** applied to frontend development:
 
 - **Expect unexpected input** — validate before processing
-- **Protect state consistency** — catch duplicates before they cause confusion
-- **Make destructive actions reversible** — confirm before deleting
+- **Protect state consistency** — catch duplicates before they cause confusion, but don't over-restrict legitimate use cases
+- **Make destructive actions reversible (or at least confirmed)** — confirm before deleting, and make sure the confirmation language matches the actual consequence
 - **Respect continuity** — users shouldn't lose progress on refresh
+- **Make feedback feel real** — a reward system without visible payoff (the original flat XP bar) technically works but fails the user experience
 
 These aren't just React best practices. They're lessons from functional QA work on shipped game titles, applied to the product layer of a web app.
+
+---
+
+## Read the Full Story
+
+This project is documented across an ongoing Medium series on what game QA taught me about building better software:
+
+1. [What Game QA Taught Me About Writing Better Software](https://medium.com/@yogita27496/what-game-qa-taught-me-about-writing-better-software-f4fd96cbe02b)
+2. [7 QA Mindsets Every Frontend Developer Should Learn](https://medium.com/@yogita27496/7-qa-mindsets-every-frontend-developer-should-learn-ff84a42d664f)
+3. [How I Added Gamification to a Simple To-Do App](#) — coming soon
 
 ---
 
@@ -117,9 +142,10 @@ These aren't just React best practices. They're lessons from functional QA work 
 
 Frontend developer with a background in game FQA (Ubisoft, Bandai Namco titles via Globalstep). Currently building in React while exploring game development with Unity and Unreal Engine.
 
-- 🌐 Portfolio: [Add Portfolio Link]
-- 💼 LinkedIn: [[Yogitaa M.](https://www.linkedin.com/in/yogita-m/)]
-- 🎮 MobyGames: [[Yogita Yogita](https://www.mobygames.com/person/1835643/yogita-yogita/)]
+- 🌐 Portfolio: [Currently in works]
+- 💼 LinkedIn: [Yogitaa M.](https://www.linkedin.com/in/yogita-m/)
+- 🎮 MobyGames: [Yogita Yogita](https://www.mobygames.com/person/1835643/yogita-yogita/)
+- ✍️ Medium: [@yogita27496](https://medium.com/@yogita27496)
 
 ---
 
