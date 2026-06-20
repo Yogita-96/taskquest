@@ -74,10 +74,12 @@ function App() {
     }
   };
 
-  const deleteQuest = (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to abandon this quest?"
-    );
+  const deleteQuest = (id, isCompleted) => {
+    const confirmMessage = isCompleted
+      ? "Remove this quest from your completed list? This cannot be undone."
+      : "Are you sure you want to abandon this quest?";
+
+    const confirmDelete = window.confirm(confirmMessage);
     if (confirmDelete) {
       setQuests(quests.filter((quest) => quest.id !== id));
     }
@@ -154,7 +156,7 @@ function App() {
                     </button>
                     <button
                       className="delete-btn"
-                      onClick={() => deleteQuest(quest.id)}
+                      onClick={() => deleteQuest(quest.id, false)}
                     >
                       Abandon
                     </button>
@@ -178,7 +180,7 @@ function App() {
                   <div className="buttons">
                     <button
                       className="delete-btn"
-                      onClick={() => deleteQuest(quest.id)}
+                      onClick={() => deleteQuest(quest.id, true)}
                     >
                       Remove
                     </button>
