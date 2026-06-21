@@ -291,7 +291,8 @@ h1 {
 .completed {
   color: #8a7aae !important;
   text-decoration: line-through;
-  text-decoration-color: #5b3aa0;
+  text-decoration-color: #a896c8;
+  text-decoration-thickness: 1.5px;
 }
 
 .buttons {
