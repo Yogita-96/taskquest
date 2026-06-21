@@ -102,11 +102,13 @@ function App() {
         </div>
       )}
 
+      <div className="container">
+        <h1><span className="title-icon">⚔</span> TaskQuest</h1>
+        <p className="subtitle">Gamified productivity powered by QA thinking.</p>
+      </div>
+
       <div className="sticky-header">
         <div className="container">
-          <h1><span className="title-icon">⚔</span> TaskQuest</h1>
-          <p className="subtitle">Gamified productivity powered by QA thinking.</p>
-
           <div className="xp-box">
             <div className="xp-header">
               <span className="player-title">{levelInfo.title}</span>
