@@ -46,7 +46,7 @@ Beneath the aesthetic, the real design driver throughout has been QA thinking: e
 - **Quest creation** with input validation — empty submissions are blocked
 - **Smart duplicate detection** — blocks duplicate active quests, but allows re-adding a quest once the existing one is completed (supports recurring tasks)
 - **Auto-sorting** — completed quests move to the bottom, keeping active quests in focus
-- **Sticky header** — XP bar and quest input stay fixed while the quest list scrolls
+- **Partial sticky header** — only the XP bar and quest input stay pinned while scrolling; the title scrolls away naturally, keeping the sticky area focused on what you actually interact with
 - **Enter key support** — submit a quest without reaching for the mouse
 - **Bulk clear completed** — remove all completed quests at once, with confirmation
 - **Context-aware confirmations** — distinct confirmation messages for abandoning an active quest vs. removing a completed one
@@ -113,6 +113,8 @@ A few deliberate decisions worth noting:
 - **Smart duplicate check** — only blocks a duplicate if the existing quest with the same name is still active; completed quests don't block re-adding, supporting recurring tasks like "Go for a walk"
 - **Context-aware `window.confirm`** — the confirmation message changes depending on whether a quest is being abandoned (active) or removed (completed), keeping the language accurate to the action
 - **Single `useEffect` per concern** — quests sync to `localStorage` in one effect, XP syncs in another inside the hook, keeping persistence logic predictable and easy to trace
+- **Action-specific labels, not generic ones** — active quests use "Abandon," completed quests use "Remove." Different actions deserve different words, even when the underlying function is shared
+- **Palette discipline over default conventions** — Complete and Abandon buttons originally used green/red, a common UI pattern. Against the Jewel Purple theme they looked disconnected from the rest of the interface, so both were rebuilt using only purple-magenta tones, differentiated by hue temperature rather than color family
 
 ---
 
@@ -134,7 +136,7 @@ This project is documented across an ongoing Medium series on what game QA taugh
 
 1. [What Game QA Taught Me About Writing Better Software](https://medium.com/@yogita27496/what-game-qa-taught-me-about-writing-better-software-f4fd96cbe02b)
 2. [7 QA Mindsets Every Frontend Developer Should Learn](https://medium.com/@yogita27496/7-qa-mindsets-every-frontend-developer-should-learn-ff84a42d664f)
-3. [How I Added Gamification to a Simple To-Do App](#) — coming soon
+3. [How I Added Gamification to a Simple To-Do App](https://medium.com/@yogita27496/how-i-added-gamification-to-a-simple-to-do-app-and-what-i-learned-along-the-way-eff00851b45a)
 
 ---
 
@@ -142,7 +144,7 @@ This project is documented across an ongoing Medium series on what game QA taugh
 
 Frontend developer with a background in game FQA (Ubisoft, Bandai Namco titles via Globalstep). Currently building in React while exploring game development with Unity and Unreal Engine.
 
-- 🌐 Portfolio: [Currently in works]
+- 🌐 Portfolio: [currently in works]
 - 💼 LinkedIn: [Yogitaa M.](https://www.linkedin.com/in/yogita-m/)
 - 🎮 MobyGames: [Yogita Yogita](https://www.mobygames.com/person/1835643/yogita-yogita/)
 - ✍️ Medium: [@yogita27496](https://medium.com/@yogita27496)
